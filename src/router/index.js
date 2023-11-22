@@ -2,11 +2,17 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // import Home from '../views/Home.vue';
 import Login from '../views/Login';
+import storeInfo from '../views/storeInfo.vue';
 import Loading from '../views/Loading'
 const routes = [{
         path: '/',
         name: 'Login',
         component: Login,
+    },
+    {
+        path: '/storeInfo',
+        name: 'storeInfo',
+        component: storeInfo,
     },
     {
         path: '/loading',
