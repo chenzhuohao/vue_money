@@ -13,7 +13,8 @@
 <hr class="mt-[2rem] b-2">
 
 <div class="flex">
-   <el-icon><CircleCheck /></el-icon>
+   <CircleCheck style="width: 1em; height: 1em; margin-right: 8px" />
+  <p>我已同意 <span><<>></span></p>
 </div>
       </div>
     </div>
@@ -42,6 +43,6 @@ num.value--
 
 </script>
 
-<style>
+<style lang="sass">
 
 </style>
