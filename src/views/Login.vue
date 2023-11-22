@@ -14,6 +14,7 @@
 
 <div class="flex">
    <CircleCheck style="width: 1em; height: 1em; margin-right: 8px" />
+  <p>我已同意 <span><<>></span></p>
 </div>
       </div>
     </div>
