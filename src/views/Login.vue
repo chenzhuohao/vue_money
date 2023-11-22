@@ -16,7 +16,7 @@
    <CircleCheck style="width: 1em; height: 1em; margin-right: 8px; color:#4095E5" />
   <p>我已同意 <span class="text-[#4095E5]"> 《xxx用户协议》</span></p>
 </div>
-<button class="rounded-[30px] w-[80%] h-[3rem] bg-[#0581FE] m-auto block mt-10 text-[#fff] text-sm">登录</button>
+<button class="rounded-[30px] w-[80%] h-[3rem] bg-[#0581FE] m-auto block mt-10 text-[#fff] text-sm" @click="login">登录</button>
       </div>
     </div>
   </div>
@@ -25,21 +25,28 @@
 
 <script setup>
 import {ref} from 'vue'
+import { useRouter } from 'vue-router';
+  const router = useRouter();
 let num=ref(60)
-let timer=ref('')
+let timer=ref(null)
 let yanzma=ref('')
 let showTime=ref(false)
-const change=()=>{
-timer=setInterval(()=>{
-if(num.value<=0){
-  clearInterval(timer)
-showTime.value=false
-}else{
-  showTime.value=true
-yanzma.value=`倒计时${num.value}秒`
-num.value--
-}
-},1000)
+const change = () => {
+  timer = setInterval(() => {
+    if (num.value <= 0) {
+      clearInterval(timer.value);
+      showTime.value = false;
+    } else {
+      showTime.value = true;
+      yanzma.value = `倒计时${num.value}秒`;
+      num.value--;
+    }
+  }, 1000);
+};
+
+const login=()=>{
+    
+  router.push('/loading');
 }
 
 </script>
