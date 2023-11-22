@@ -1,5 +1,6 @@
 <template>
   <div class="store-info">
+    <NavBar title="电商融" />
     <div class="background">店铺信息上传</div>
     <div class="box">
       <div class="form">
@@ -37,8 +38,8 @@
 </template>
 
 <script setup>
+import NavBar from '@/components/NavBar/NavBar.vue'
 import { ref } from 'vue'
-import { Plus } from '@element-plus/icons-vue'
 
 const value = ref('')
 const options = ref([

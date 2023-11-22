@@ -1,6 +1,6 @@
 <template>
   <div class="show-credit">
-    <!-- <NavBar title="授信展示页" /> -->
+    <NavBar title="授信展示页" />
     <div class="background"></div>
     <div class="box box-one">
       <div class="top">
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-// import NavBar from '@/components/NavBar/NavBar.vue'
+import NavBar from '@/components/NavBar/NavBar.vue'
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,6 @@
 <template>
  <div class="w-screen">
+    <NavBar title="试算等待页" />
     <div class="w-screen bg-blue-500 h-[40vh]">
       <p class="w-full absolute top-[10vh] text-xl text-[#fff] text-center">额度审核中...</p>
     </div>
@@ -20,6 +21,7 @@
 </template>
 
 <script setup>
+import NavBar from '@/components/NavBar/NavBar.vue'
 
 </script>
 
