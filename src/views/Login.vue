@@ -45,7 +45,7 @@ const change = () => {
 };
 
 const login=()=>{
-    
+
   router.push('/loading');
 }
 

@@ -76,9 +76,6 @@ const beforeAvatarUpload = (file) => {
     height: 15.31rem;
     background-color: #4095e5;
     z-index: -1;
-    position: sticky;
-    top: 0;
-    left: 0;
     font-size: 1.43rem;
     display: flex;
     justify-content: center;
