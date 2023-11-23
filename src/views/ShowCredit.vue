@@ -1,6 +1,6 @@
 <template>
   <div class="show-credit">
-    <NavBar title="授信展示页" />
+    <NavBar @goback="goback" title="授信展示页" />
     <div class="background"></div>
     <div class="box box-one">
       <div class="top">
@@ -26,11 +26,11 @@
         </div>
         <div class="from-item">
           <div class="label">店铺:</div>
-          <div class="value">百兰根(淘宝)</div>
+          <div class="value">{{ store }}</div>
         </div>
       </div>
     </div>
-    <a href="#" class="jump">重新运算</a>
+    <a href="#" class="jump" @click="resetOperation">重新运算</a>
     <div class="btn-box">
       <el-button type="primary" class="btn">返回</el-button>
     </div>
@@ -53,13 +53,16 @@
 <script setup>
 import NavBar from '@/components/NavBar/NavBar.vue'
 import { ref, computed  } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const validityPeriod = ref('202-02-30')
 const quota = ref(2000000)
 const phone = ref('400-000-0000')
 const showPhoneDialog = ref(false)
 // 移动端还是PC端
 const isMobile = ref(false)
+const store = '百兰根(淘宝)'
 
 // 计算是否过期
 const isExpired = computed(() => {
@@ -86,6 +89,21 @@ const closePhoneDialog = () => {
 // 拨打
 const call = () => {
   window.location.href = 'tel:' + phone.value
+}
+
+// 重新运算
+const resetOperation = () => {
+  // 把店铺和企业信息带过去
+  router.push({
+    path: '/storeInfo',
+    query: {
+      store: store,
+    }
+  })
+}
+
+// 返回
+const goback = () => {
 }
 </script>
 

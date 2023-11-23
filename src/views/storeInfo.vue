@@ -6,7 +6,7 @@
       <div class="form">
         <div class="from-item">
           <div class="label">店铺名称</div>
-          <input type="text" class="input" placeholder="请输入店铺名称" />
+          <input type="text" v-model="store" class="input" placeholder="请输入店铺名称" />
         </div>
         <div class="from-item">
           <div class="label">店铺主体</div>
@@ -50,7 +50,7 @@
 
 <script setup>
 import NavBar from '@/components/NavBar/NavBar.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
@@ -67,6 +67,7 @@ const options = ref([
     label: '抖音'
   }
 ])
+const store = ref('')
 
 let orderImg = ref('')
 let billImg = ref([
@@ -114,6 +115,10 @@ const deleteBillImg = (index) => {
 const summmit = () => {
   router.push('/Loading')
 }
+
+onMounted(() => {
+  store.value = router.currentRoute.value.query.store
+})
 </script>
 
 <style lang="scss" scoped>
