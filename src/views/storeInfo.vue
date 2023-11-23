@@ -17,7 +17,7 @@
         <div class="from-item from-item-order">
           <div class="label">订单上传</div>
           <el-upload class="avatar-uploader" action="http://sph-api.atguigu.cn/api/admin/product/fileUpload" :show-file-list="false" :on-success="onOrderSuccess" :before-upload="beforeUpload" accept="image/png, image/jpeg, image/gif, image/jpg">
-            <img v-if="orderImg" :src="orderImg" class="avatar" />
+            <a  v-if="orderImg" :href="orderImg" target="_blank"><img :src="orderImg" class="avatar" /></a>
             <div v-else class="avatar-uploader-icon">
               <el-icon><Plus /></el-icon>
             </div>
@@ -27,9 +27,9 @@
           <div class="label">结算单上传</div>
           <div class="content">
             <div v-if="billImg && billImg.length" class="img-list">
-              <div v-for="(img, index) in billImg" :key="index">
-                <img :src="img" class="avatar" />
-                <img src="" class="delete-icon">
+              <div v-for="(img, index) in billImg" :key="index" class="imgs">
+                <a :href="img" target="_blank"><img :src="img" class="avatar" /></a>
+                <img  src="../assets/riLine-close-line Copy.svg" @click="deleteBillImg(index)" class="delete-icon">
               </div>
             </div>
             <el-upload class="avatar-uploader" action="http://sph-api.atguigu.cn/api/admin/product/fileUpload" :show-file-list="false" :on-success="onBillSuccess" :before-upload="beforeUpload" accept="image/png, image/jpeg, image/gif, image/jpg">
@@ -70,9 +70,9 @@ const options = ref([
 
 let orderImg = ref('')
 let billImg = ref([
-  'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo',
-  'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo',
-  'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo'
+  // 'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo',
+  // 'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo',
+  // 'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo'
 ])
 
 // 图片上传前的钩子
@@ -105,6 +105,10 @@ const onBillSuccess = (response) => {
   } else {
     ElMessage.error(response.message)
   }
+}
+
+const deleteBillImg = (index) => {
+  billImg.value.splice(index, 1)
 }
 
 const summmit = () => {
@@ -190,6 +194,10 @@ const summmit = () => {
       align-items: center;
       flex-wrap: wrap;
 
+      .imgs {
+        position: relative;
+      }
+
       .avatar {
         width: 3.5rem;
         height: 3.5rem;
@@ -197,6 +205,16 @@ const summmit = () => {
         object-fit: cover;
         margin-right: 0.85rem;
         margin-bottom: 0.85rem;
+        padding: 0.31rem;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+      }
+
+      .delete-icon {
+        width: 1rem;
+        height: 1rem;
+        position: absolute;
+        right: 0.8rem;
+        top: 0;
       }
     }
 
@@ -244,6 +262,10 @@ const summmit = () => {
     height: 3.5rem;
     border-radius: 4px;
     object-fit: cover;
+    margin-right: 0.85rem;
+    margin-bottom: 0.85rem;
+    padding: 0.31rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
   }
 }
 
