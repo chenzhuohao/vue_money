@@ -16,22 +16,33 @@
         </div>
         <div class="from-item from-item-order">
           <div class="label">订单上传</div>
-          <el-upload class="avatar-uploader" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+          <el-upload class="avatar-uploader" action="http://sph-api.atguigu.cn/api/admin/product/fileUpload" :show-file-list="false" :on-success="onOrderSuccess" :before-upload="beforeUpload" accept="image/png, image/jpeg, image/gif, image/jpg">
+            <img v-if="orderImg" :src="orderImg" class="avatar" />
+            <div v-else class="avatar-uploader-icon">
+              <el-icon><Plus /></el-icon>
+            </div>
           </el-upload>
         </div>
-        <div class="from-item from-item-order" style="margin-top: 2rem">
+        <div class="from-item from-item-order" style="margin-top: 1rem">
           <div class="label">结算单上传</div>
-          <el-upload class="avatar-uploader" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-          </el-upload>
+          <div class="content">
+            <div v-if="billImg && billImg.length" class="img-list">
+              <div v-for="(img, index) in billImg" :key="index">
+                <img :src="img" class="avatar" />
+                <img src="" class="delete-icon">
+              </div>
+            </div>
+            <el-upload class="avatar-uploader" action="http://sph-api.atguigu.cn/api/admin/product/fileUpload" :show-file-list="false" :on-success="onBillSuccess" :before-upload="beforeUpload" accept="image/png, image/jpeg, image/gif, image/jpg">
+              <div class="avatar-uploader-icon">
+                <el-icon><Plus /></el-icon>
+              </div>
+            </el-upload>
+          </div>
         </div>
       </div>
       <a href="#" class="jump">我该如何获取订单和结算单？</a>
       <div class="btn-box">
-        <el-button type="primary" class="btn">开始额度授信</el-button>
+        <el-button type="primary" class="btn" @click="summmit">开始额度授信</el-button>
       </div>
     </div>
   </div>
@@ -40,6 +51,10 @@
 <script setup>
 import NavBar from '@/components/NavBar/NavBar.vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+
+const router = useRouter()
 
 const value = ref('')
 const options = ref([
@@ -53,16 +68,47 @@ const options = ref([
   }
 ])
 
-const imageUrl = ref('')
+let orderImg = ref('')
+let billImg = ref([
+  'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo',
+  'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo',
+  'https://lh3.googleusercontent.com/ogw/AKPQZvyzOeOESuO8k8SWmwh9dz39rW5pCqm3-6ZcYS_P=s32-c-mo'
+])
 
-const handleAvatarSuccess = (res, file) => {
-  console.log(res)
-  imageUrl.value = URL.createObjectURL(file.raw)
+// 图片上传前的钩子
+const beforeUpload = (rawFile) => {
+  // 图片类型
+  const isImage = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg']
+  if (!isImage.includes(rawFile.type)) {
+    ElMessage.error(`请上传jpeg、png、jpg、gif格式的图片!`)
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 4) {
+    ElMessage.error('图片大小不能超过4MB!')
+    return false
+  }
+  return true
 }
 
-const beforeAvatarUpload = (file) => {
-  console.log(file)
-  return true
+// 文件上传成功的钩子
+const onOrderSuccess = (response) => {
+  if (response.code === 200) {
+    orderImg.value = response.data
+  } else {
+    ElMessage.error(response.message)
+  }
+}
+
+// 文件上传成功的钩子
+const onBillSuccess = (response) => {
+  if (response.code === 200) {
+    billImg.value = [...billImg.value, response.data]
+  } else {
+    ElMessage.error(response.message)
+  }
+}
+
+const summmit = () => {
+  router.push('/Loading')
 }
 </script>
 
@@ -131,14 +177,43 @@ const beforeAvatarUpload = (file) => {
     align-items: flex-start;
     border-bottom: none;
 
+    .content {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .img-list {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+
+      .avatar {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 4px;
+        object-fit: cover;
+        margin-right: 0.85rem;
+        margin-bottom: 0.85rem;
+      }
+    }
+
     .avatar-uploader {
-      width: 3.5rem;
-      height: 3.5rem;
-      border: 1px solid rgba(0, 0, 0, 0.15);
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 4px 4px 4px 4px;
+
+      .avatar-uploader-icon {
+        padding: 1.3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        margin-bottom: 0.85rem;
+      }
     }
   }
 
@@ -146,7 +221,6 @@ const beforeAvatarUpload = (file) => {
     color: #4095e5;
     font-size: 0.875rem;
     font-family: PingFangSC-regular;
-    margin-top: 1rem;
     display: block;
     text-align: center;
   }
@@ -163,6 +237,13 @@ const beforeAvatarUpload = (file) => {
       background-color: #0581fe;
       font-family: PingFangSC-regular;
     }
+  }
+
+  .avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 4px;
+    object-fit: cover;
   }
 }
 
